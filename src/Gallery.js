@@ -18,9 +18,9 @@ class Gallery extends Component {
     super();
 
     this.state = {
-      photos: photos.data,
+      photos: photos.data
     };
-    this.state.displayPhotos= this.state.photos.slice(0,12);
+    this.state.displayPhotos = this.state.photos.slice(0, 12);
   }
 
   setFilter = e => {
@@ -68,30 +68,45 @@ class Gallery extends Component {
   };
 
   setSearch = e => {
-
     if (e.target.value) {
-      let regex = new RegExp(e.target.value, 'i')
-      this.setState({photos:photos.data.filter((photo) => {
-        return regex.test(photo.user.username)
-      })})
+      let regex = new RegExp(e.target.value, "i");
+      this.setState({
+        photos: photos.data.filter(photo => {
+          return regex.test(photo.user.username);
+        })
+      });
     } else {
       this.setState({
         photos: photos.data
       });
     }
-  }
+  };
 
-  setPagination = e =>{
-    let value = (e.target.innerHTML-1);
-    value = value*12;
-    this.setState({displayPhotos:this.state.photos.slice(value,value+12)})
+  setPagination = e => {
+    // let prevPhotos = this.state.photos
+    // this.setState({
+    //   prevPhotos: prevPhotos
+    // })
+
+    let value = e.target.innerHTML - 1;
+    value = value * 12;
+    this.setState({displayPhotos: this.state.photos.slice(value, value + 12)});
+  };
+
+  componentWillUpdate(nextProps, nextState) {
+    if (this.state.photos != nextState.photos) {
+      nextState.displayPhotos = nextState.photos.slice(0, 12);
+    }
   }
 
   render() {
     return (
       <div>
-        <Pagination photos={this.state.photos} setPagination={this.setPagination} />
-        <Search setSearch={this.setSearch}/>
+        <Pagination
+          photos={this.state.photos}
+          setPagination={this.setPagination}
+        />
+        <Search setSearch={this.setSearch} />
         <Filter setFilter={this.setFilter} count={this.state.photos.length} />
         <Sort setSort={this.setSort} />
         <PhotoCollection photos={this.state.displayPhotos} />

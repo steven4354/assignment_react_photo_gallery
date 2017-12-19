@@ -23,11 +23,20 @@
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
+.photo-box {
+  height: 550px;
+  border: black solid 2px;
+  padding: 10px;
+}
 
-.photo-box{
-  height:500px;
+label {
+  margin-right: 5px;
 }
