@@ -70,10 +70,12 @@ class Gallery extends Component {
   setSearch = e => {
     if (e.target.value) {
       let regex = new RegExp(e.target.value, "i");
-      this.setState({
-        photos: photos.data.filter(photo => {
+      let filteredPhotos =photos.data.filter(photo => {
           return regex.test(photo.user.username);
-        })
+      });
+      this.setState({
+        photos: filteredPhotos,
+        regex: regex       
       });
     } else {
       this.setState({
@@ -106,7 +108,7 @@ class Gallery extends Component {
           photos={this.state.photos}
           setPagination={this.setPagination}
         />
-        <Search setSearch={this.setSearch} />
+        <Search setSearch={this.setSearch} results={this.state.photos.map(photo=>photo.user.username)} regex={this.state.regex}/>
         <Filter setFilter={this.setFilter} count={this.state.photos.length} />
         <Sort setSort={this.setSort} />
         <PhotoCollection photos={this.state.displayPhotos} />
