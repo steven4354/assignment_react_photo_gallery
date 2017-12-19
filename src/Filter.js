@@ -1,21 +1,16 @@
 import React, {Component} from "react";
-// import PhotoGrid from "react-photo-feed";
-
-// const photoMan = photos.data.map((photo) => {
-//
-// })
-
-// https://github.com/lkazberova/react-photo-feed
 
 class PhotoCollection extends Component {
   constructor() {
     super();
+    this.state = {
+      photos: photos.data
+    };
   }
-
   render() {
     return (
       <div class="row">
-        {this.props.photos.map(photo => {
+        {this.state.photos.map(photo => {
           const time = new Date(photo.created_time);
 
           return (
