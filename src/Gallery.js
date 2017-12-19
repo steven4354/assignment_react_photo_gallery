@@ -74,21 +74,13 @@ class Gallery extends Component {
   setSearch = e => {
 
     if (e.target.value) {
+      let regex = new RegExp(e.target.value, 'i')
+      photos.filter((photo) => {
+        return photo.caption
+      })
+    } else {
       this.setState({
         photos: photos.data
-      });
-    } else if (e.target.value == "time2") {
-      this.setState({
-        photos: photos.data.sort((a, b) => {
-          if (a.created_time > b.created_time) {
-            return -1;
-          }
-          if (b.created_time > a.created_time) {
-            return 1;
-          }
-          // a must be equal to b
-          return 0;
-        })
       });
     }
   }
