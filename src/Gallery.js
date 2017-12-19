@@ -70,12 +70,12 @@ class Gallery extends Component {
   setSearch = e => {
     if (e.target.value) {
       let regex = new RegExp(e.target.value, "i");
-      let filteredPhotos =photos.data.filter(photo => {
-          return regex.test(photo.user.username);
+      let filteredPhotos = photos.data.filter(photo => {
+        return regex.test(photo.user.username);
       });
       this.setState({
         photos: filteredPhotos,
-        regex: regex       
+        regex: regex
       });
     } else {
       this.setState({
@@ -95,6 +95,45 @@ class Gallery extends Component {
     this.setState({displayPhotos: this.state.photos.slice(value, value + 12)});
   };
 
+  setColumnSort = e => {
+    let arr = [];
+    let arrIdx = [];
+    let start = e.target.value;
+    arr = this.state.displayPhotos.filter((photo, index) => {
+      if ((index - start) % 4 == 0) {
+        arrIdx.push(index);
+        return true;
+      }
+    });
+
+    arr = arr.sort((a, b) => {
+      if (b.user.username > a.user.username) {
+        return -1;
+      }
+      if (a.user.username > b.user.username) {
+        return 1;
+      }
+      // a must be equal to b
+      return 0;
+    });
+
+    let dummyPhotos = this.state.displayPhotos.map(photo => {
+      return photo;
+    });
+
+    while (true) {
+      if (arrIdx.length == 0) {
+        break;
+      }
+      let idx = arrIdx.splice(0, 1);
+      dummyPhotos[idx] = arr.splice(0, 1);
+    }
+
+    this.setState({
+      displayPhotos: dummyPhotos
+    });
+  };
+
   componentWillUpdate(nextProps, nextState) {
     if (this.state.photos != nextState.photos) {
       nextState.displayPhotos = nextState.photos.slice(0, 12);
@@ -108,10 +147,17 @@ class Gallery extends Component {
           photos={this.state.photos}
           setPagination={this.setPagination}
         />
-        <Search setSearch={this.setSearch} results={this.state.photos.map(photo=>photo.user.username)} regex={this.state.regex}/>
+        <Search
+          setSearch={this.setSearch}
+          results={this.state.photos.map(photo => photo.user.username)}
+          regex={this.state.regex}
+        />
         <Filter setFilter={this.setFilter} count={this.state.photos.length} />
         <Sort setSort={this.setSort} />
-        <PhotoCollection photos={this.state.displayPhotos} />
+        <PhotoCollection
+          sortCol={this.setColumnSort}
+          photos={this.state.displayPhotos}
+        />
       </div>
     );
   }
