@@ -22,13 +22,14 @@ class Filter extends Component {
   render() {
     return (
       <div>
-        <select onChange={this.props.setFilter}>
+        <label htmlFort="Filter">Filter by Filter:</label>
+        <select onChange={this.props.setFilter} name="Filter">
           <option />
           {uniqueFilters.map(filter => {
             return <option key={filter}>{filter}</option>;
           })}
         </select>
-        <h4>Count: {this.props.count} Results</h4>
+        <h4>{this.props.count} Results</h4>
       </div>
     );
   }

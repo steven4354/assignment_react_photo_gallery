@@ -16,7 +16,7 @@ class PhotoCollection extends Component {
           const time = new Date(photo.created_time*1000);;
 
           return (
-            <div className="col-md-3" key={`photo${index}`}>
+            <div className="col-md-3 photo-box" key={`photo${index}`}>
               <a href={photo.images.standard_resolution.url} target="_blank"><img alt="" src={photo.images.low_resolution.url} /></a>
               <a href={`https://www.instagram.com/${photo.user.username}/`} target="_blank"><p>user: {photo.user.username}</p></a>
               <p>time: {time.toString()}</p>

@@ -7,24 +7,20 @@ import React, {Component} from "react";
 import Filter from "./Filter";
 import PhotoCollection from "./PhotoCollection";
 import Sort from "./Sort";
+import Search from "./Search";
+import Pagination from "./Pagination";
 
 //requiring the photos for the galleery
 const photos = require("./photos.js");
 
-class Search extends Component {
-  render(){
-    return(
-      <input type="text" onChange=></input>
-    )
-  }
-}
 class Gallery extends Component {
   constructor() {
     super();
 
     this.state = {
-      photos: photos.data
+      photos: photos.data,
     };
+    this.state.displayPhotos= this.state.photos.slice(0,12);
   }
 
   setFilter = e => {
@@ -55,7 +51,7 @@ class Gallery extends Component {
           return 0;
         })
       });
-    } else if (e.target.value == "time2") {
+    } else if (e.target.value === "time2") {
       this.setState({
         photos: photos.data.sort((a, b) => {
           if (a.created_time > b.created_time) {
@@ -75,9 +71,9 @@ class Gallery extends Component {
 
     if (e.target.value) {
       let regex = new RegExp(e.target.value, 'i')
-      photos.filter((photo) => {
-        return photo.caption
-      })
+      this.setState({photos:photos.data.filter((photo) => {
+        return regex.test(photo.user.username)
+      })})
     } else {
       this.setState({
         photos: photos.data
@@ -85,13 +81,20 @@ class Gallery extends Component {
     }
   }
 
+  setPagination = e =>{
+    let value = (e.target.innerHTML-1);
+    value = value*12;
+    this.setState({displayPhotos:this.state.photos.slice(value,value+12)})
+  }
+
   render() {
     return (
       <div>
+        <Pagination photos={this.state.photos} setPagination={this.setPagination} />
         <Search setSearch={this.setSearch}/>
         <Filter setFilter={this.setFilter} count={this.state.photos.length} />
         <Sort setSort={this.setSort} />
-        <PhotoCollection photos={this.state.photos} />
+        <PhotoCollection photos={this.state.displayPhotos} />
       </div>
     );
   }
