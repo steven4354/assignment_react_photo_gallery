@@ -125,8 +125,8 @@ class Gallery extends Component {
       if (arrIdx.length == 0) {
         break;
       }
-      let idx = arrIdx.splice(0, 1);
-      dummyPhotos[idx] = arr.splice(0, 1);
+      let idx = arrIdx.splice(0, 1)[0];
+      dummyPhotos[idx] = arr.splice(0, 1)[0];
     }
 
     this.setState({
